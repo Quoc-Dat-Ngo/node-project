@@ -1,7 +1,12 @@
 const express = require('express');
-const app = express();
 const tasks = require('./routes/tasks');
+const init_db = require('./database/init');
+
+const app = express();
 const port = 3000;
+
+// Initialise new database
+init_db();
 
 // Middleware
 app.use(express.json());
