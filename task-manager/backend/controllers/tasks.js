@@ -1,5 +1,12 @@
-const getAllTasks = (req, res) => {
-  res.send('All items from the database');
+const read_all_tasks = require('../database/read_all_tasks');
+
+const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await read_all_tasks();
+    res.json(tasks);
+  } catch (e) {
+    res.status(500).json({ error: 'Fail to fetch tasks' });
+  }
 };
 
 const createTask = (req, res) => {
