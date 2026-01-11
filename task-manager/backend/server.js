@@ -1,6 +1,7 @@
 const express = require('express');
 const tasks = require('./routes/tasks');
 const init_db = require('./database/init');
+const pool = require('./database/pool');
 
 const app = express();
 const port = 3000;
@@ -34,3 +35,10 @@ app.patch('/api/v1/tasks/:id', (req, res) => {});
 app.delete('/api/v1/tasks/:id', (req, res) => {});
 
 app.listen(port, console.log(`Server is listening on port ${port}...`));
+
+// When users press CTRL+C to shutdown the server
+process.on('SIGINT', async () => {
+  console.log('Shutting down...');
+  await pool.end();
+  server.close(() => process.exit(0));
+});
