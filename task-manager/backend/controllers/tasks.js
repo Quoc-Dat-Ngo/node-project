@@ -1,4 +1,5 @@
-const read_all_tasks = require('../database/read_all_tasks');
+const { read_all_tasks } = require('../database/read_tasks');
+const create_new_task = require('../database/write_tasks');
 
 const getAllTasks = async (req, res) => {
   try {
@@ -9,8 +10,13 @@ const getAllTasks = async (req, res) => {
   }
 };
 
-const createTask = (req, res) => {
-  res.json(req.body);
+const createTask = async (req, res) => {
+  try {
+    await create_new_task(req.body);
+    res.json(req.body);
+  } catch (e) {
+    res.status(500).json({ error: 'Fail to create task' });
+  }
 };
 
 const getSingleTask = (req, res) => {
