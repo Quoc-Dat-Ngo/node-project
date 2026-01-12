@@ -1,44 +1,39 @@
 const express = require('express');
 const tasks = require('./routes/tasks');
-const init_db = require('./database/init');
+const initDb = require('./database/init');
 const pool = require('./database/pool');
+const morgan = require('morgan');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const port = 3003;
 
 // Initialise new database
-init_db();
+initDb();
 
 // Middleware
 app.use(express.json());
+app.use(morgan('dev'));
 
 // Routes
 app.get('/', (req, res) => {
   res.send('Task Manager App');
 });
 
+// Routes for handling API endpoints
 app.use('/api/v1/tasks', tasks);
 
-// Get all tasks
-app.get('/api/v1/tasks', (req, res) => {});
+// Apply a global error handler middleware
+app.use(errorHandler);
 
-// Create a new task
-app.post('/api/v1/tasks', (req, res) => {});
-
-// Get info about a single task
-app.get('/api/v1/tasks/:id', (req, res) => {});
-
-// Update a task
-app.patch('/api/v1/tasks/:id', (req, res) => {});
-
-// Delete a task
-app.delete('/api/v1/tasks/:id', (req, res) => {});
-
-app.listen(port, console.log(`Server is listening on port ${port}...`));
+const server = app.listen(
+  port,
+  console.log(`Server is listening on port ${port}...`),
+);
 
 // When users press CTRL+C to shutdown the server
 process.on('SIGINT', async () => {
   console.log('Shutting down...');
   await pool.end();
-  process.exit(0);
+  server.end(() => process.exit(0));
 });
