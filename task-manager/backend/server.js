@@ -4,7 +4,7 @@ const init_db = require('./database/init');
 const pool = require('./database/pool');
 
 const app = express();
-const port = 3000;
+const port = 3003;
 
 // Initialise new database
 init_db();
@@ -40,5 +40,5 @@ app.listen(port, console.log(`Server is listening on port ${port}...`));
 process.on('SIGINT', async () => {
   console.log('Shutting down...');
   await pool.end();
-  server.close(() => process.exit(0));
+  process.exit(0);
 });
