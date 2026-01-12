@@ -1,5 +1,9 @@
-const { read_all_tasks } = require('../database/read_tasks');
-const create_new_task = require('../database/write_tasks');
+const { read_all_tasks, read_single_task } = require('../database/read_tasks');
+const {
+  create_new_task,
+  update_single_task,
+} = require('../database/write_tasks');
+const delete_single_task = require('../database/delete_tasks');
 
 const getAllTasks = async (req, res) => {
   try {
@@ -19,19 +23,39 @@ const createTask = async (req, res) => {
   }
 };
 
-const getSingleTask = (req, res) => {
+const getSingleTask = async (req, res) => {
   const { id } = req.params;
-  res.send(`Info about the selected task number ${id}`);
+  try {
+    const task = await read_single_task(Number(id));
+    if (!task) {
+      return res
+        .status(404)
+        .json({ error: `Cannot find such task with given id ${id}` });
+    }
+    res.json(task[0]);
+  } catch (e) {
+    res.status(500).json({ error: `Fail to fetch a task with id: ${id}` });
+  }
 };
 
-const updateSingleTask = (req, res) => {
+const updateSingleTask = async (req, res) => {
   const { id } = req.params;
-  res.send(`Update the selected task ${id}`);
+  try {
+    const task = await update_single_task();
+    res.json(task);
+  } catch (e) {
+    res.status(500).json({ error: `Fail to update a task with id: ${id}` });
+  }
 };
 
-const deleteSingleTask = (req, res) => {
+const deleteSingleTask = async (req, res) => {
   const { id } = req.params;
-  res.send(`Delete the selected task ${id}`);
+  try {
+    const task = await delete_single_task();
+    res.json({ status: `Sucessfully deleted the task with given id ${id}` });
+  } catch (e) {
+    res.status(500).json({ error: `Fail to fetch a task with id ${id}` });
+  }
 };
 
 module.exports = {
