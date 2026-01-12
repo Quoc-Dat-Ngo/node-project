@@ -26,8 +26,9 @@ const createTask = async (req, res) => {
 const getSingleTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const task = await read_single_task(Number(id));
-    if (!task) {
+    const task = await read_single_task(id);
+    console.log(task);
+    if (!task.length) {
       return res
         .status(404)
         .json({ error: `Cannot find such task with given id ${id}` });
@@ -41,8 +42,14 @@ const getSingleTask = async (req, res) => {
 const updateSingleTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const task = await update_single_task();
-    res.json(task);
+    const update = await update_single_task(id, req.body);
+    console.log(update);
+    if (!update.rowCount) {
+      return res
+        .status(404)
+        .json({ error: `Cannot find such task with given id ${id}` });
+    }
+    res.json({ status: 'Successfully updated' });
   } catch (e) {
     res.status(500).json({ error: `Fail to update a task with id: ${id}` });
   }
@@ -51,7 +58,13 @@ const updateSingleTask = async (req, res) => {
 const deleteSingleTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const task = await delete_single_task();
+    const del = await delete_single_task(id);
+    console.log(del);
+    if (!del.rowCount) {
+      return res
+        .status(404)
+        .json({ error: `Cannot find such task with given id ${id}` });
+    }
     res.json({ status: `Sucessfully deleted the task with given id ${id}` });
   } catch (e) {
     res.status(500).json({ error: `Fail to fetch a task with id ${id}` });
