@@ -1,6 +1,6 @@
 const pool = require('./pool');
 
-const create_new_task = async (body) => {
+const create_new_task = async body => {
   try {
     console.log(body);
     await pool.query(
@@ -12,4 +12,6 @@ const create_new_task = async (body) => {
   }
 };
 
-module.exports = create_new_task;
+const update_single_task = async id => {};
+
+module.exports = { create_new_task, update_single_task };

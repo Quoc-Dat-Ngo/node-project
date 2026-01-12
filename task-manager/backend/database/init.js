@@ -2,7 +2,7 @@ const pool = require('./pool');
 
 const init_db = async () => {
   try {
-    await pool.query('DROP TABLE IF EXISTS tasks;');
+    // await pool.query('DROP TABLE IF EXISTS tasks;');
 
     await pool.query(`
     	CREATE TABLE IF NOT EXISTS tasks (
