@@ -18,7 +18,7 @@ const read_single_task = async id => {
     // const task_to_return = tasks.find(task => task.id === id);
 
     // Method 2 (Direct):
-    const { rows } = await pool.query('Select * FROM tasks WHERE id = $1', [
+    const { rows } = await pool.query('SELECT * FROM tasks WHERE id = $1', [
       id,
     ]);
     return rows;
