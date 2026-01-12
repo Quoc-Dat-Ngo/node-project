@@ -1,73 +1,69 @@
-const { read_all_tasks, read_single_task } = require('../database/read_tasks');
 const {
-  create_new_task,
-  update_single_task,
-} = require('../database/write_tasks');
-const delete_single_task = require('../database/delete_tasks');
+  readAllTasks,
+  readSingleTask,
+  createNewTask,
+  updateTask: updateTaskService,
+  deleteSingleTask: deleteTaskService,
+} = require('../services/taskService');
+const NotFoundError = require('../utils/NotFoundError');
 
 const getAllTasks = async (req, res) => {
   try {
-    const tasks = await read_all_tasks();
+    const tasks = await readAllTasks();
     res.json(tasks);
   } catch (e) {
-    res.status(500).json({ error: 'Fail to fetch tasks' });
+    next(e);
   }
 };
 
 const createTask = async (req, res) => {
   try {
-    await create_new_task(req.body);
+    await createNewTask(req.body);
     res.json(req.body);
   } catch (e) {
-    res.status(500).json({ error: 'Fail to create task' });
+    next(e);
   }
 };
 
 const getSingleTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const task = await read_single_task(id);
+    const task = await readSingleTask(id);
     console.log(task);
     if (!task.length) {
-      return res
-        .status(404)
-        .json({ error: `Cannot find such task with given id ${id}` });
+      throw new NotFoundError(`Task with id ${id} not found`);
     }
     res.json(task[0]);
   } catch (e) {
-    res.status(500).json({ error: `Fail to fetch a task with id: ${id}` });
+    next(e);
   }
 };
 
-const updateSingleTask = async (req, res) => {
+const updateTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const update = await update_single_task(id, req.body);
+    const update = await updateTaskService(id, req.body);
     console.log(update);
     if (!update.rowCount) {
-      return res
-        .status(404)
-        .json({ error: `Cannot find such task with given id ${id}` });
+      throw new NotFoundError(`Task with id ${id} not found`);
     }
     res.json({ status: 'Successfully updated' });
   } catch (e) {
-    res.status(500).json({ error: `Fail to update a task with id: ${id}` });
+    next(e);
   }
 };
 
 const deleteSingleTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const del = await delete_single_task(id);
+    const del = await deleteTaskService(id);
     console.log(del);
     if (!del.rowCount) {
-      return res
-        .status(404)
-        .json({ error: `Cannot find such task with given id ${id}` });
+      throw new NotFoundError(`Task with id ${id} not found`);
     }
     res.json({ status: `Sucessfully deleted the task with given id ${id}` });
   } catch (e) {
-    res.status(500).json({ error: `Fail to fetch a task with id ${id}` });
+    next(e);
   }
 };
 
@@ -75,6 +71,6 @@ module.exports = {
   getAllTasks,
   createTask,
   getSingleTask,
-  updateSingleTask,
+  updateTask,
   deleteSingleTask,
 };
