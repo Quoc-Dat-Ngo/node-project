@@ -1,6 +1,6 @@
 const pool = require('./pool');
 
-const init_db = async () => {
+const initDb = async () => {
   try {
     // await pool.query('DROP TABLE IF EXISTS tasks;');
 
@@ -17,4 +17,4 @@ const init_db = async () => {
   }
 };
 
-module.exports = init_db;
+module.exports = initDb;
