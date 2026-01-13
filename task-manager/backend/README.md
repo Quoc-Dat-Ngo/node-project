@@ -11,6 +11,16 @@ and deployment workflows.
 
 ---
 
+# 🛠️ Tech Stack
+
+- Node.js
+- Express
+- PostgreSQL (pg)
+- Joi (validation)
+- Morgan (logging)
+
+---
+
 ## 🚀 Features
 
 ### ✔ RESTful API for Task Management
@@ -91,11 +101,3 @@ CREATE TABLE IF NOT EXISTS tasks (
 - Deploy to Render
 - Environment variable configuration
 - Production logging
-
-### 🛠️ Tech Stack
-
-- Node.js
-- Express
-- PostgreSQL (pg)
-- Joi (validation)
-- Morgan (logging)
