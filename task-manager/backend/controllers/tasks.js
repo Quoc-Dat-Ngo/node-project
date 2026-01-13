@@ -7,7 +7,7 @@ const {
 } = require('../services/taskService');
 const NotFoundError = require('../utils/NotFoundError');
 
-const getAllTasks = async (req, res) => {
+const getAllTasks = async (req, res, next) => {
   try {
     const tasks = await readAllTasks();
     res.json(tasks);
@@ -16,7 +16,7 @@ const getAllTasks = async (req, res) => {
   }
 };
 
-const createTask = async (req, res) => {
+const createTask = async (req, res, next) => {
   try {
     await createNewTask(req.body);
     res.json(req.body);
@@ -25,7 +25,7 @@ const createTask = async (req, res) => {
   }
 };
 
-const getSingleTask = async (req, res) => {
+const getSingleTask = async (req, res, next) => {
   const { id } = req.params;
   try {
     const task = await readSingleTask(id);
@@ -39,7 +39,7 @@ const getSingleTask = async (req, res) => {
   }
 };
 
-const updateTask = async (req, res) => {
+const updateTask = async (req, res, next) => {
   const { id } = req.params;
   try {
     const update = await updateTaskService(id, req.body);
@@ -53,7 +53,7 @@ const updateTask = async (req, res) => {
   }
 };
 
-const deleteSingleTask = async (req, res) => {
+const deleteSingleTask = async (req, res, next) => {
   const { id } = req.params;
   try {
     const del = await deleteTaskService(id);

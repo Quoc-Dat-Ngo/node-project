@@ -11,13 +11,6 @@ const readAllTasks = async () => {
 
 const readSingleTask = async id => {
   try {
-    // Method 1 (Indirect):
-    // const tasks = await readAllTasks();
-    // console.log(tasks);
-    // console.log(id);
-    // const task_to_return = tasks.find(task => task.id === id);
-
-    // Method 2 (Direct):
     const { rows } = await pool.query('SELECT * FROM tasks WHERE id = $1', [
       id,
     ]);
@@ -31,8 +24,8 @@ const createNewTask = async body => {
   try {
     console.log(body);
     await pool.query(
-      'INSERT INTO tasks (title, active, description) VALUES ($1, $2, $3);',
-      [body.title, body.active, body.description],
+      'INSERT INTO tasks (title, active, description) VALUES ($1, DEFAULT, $2);',
+      [body.title, body.description],
     );
   } catch (e) {
     throw e;
