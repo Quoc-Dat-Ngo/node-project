@@ -22,11 +22,13 @@ const readSingleTask = async id => {
 
 const createNewTask = async body => {
   try {
-    console.log(body);
-    await pool.query(
-      'INSERT INTO tasks (title, active, description) VALUES ($1, DEFAULT, $2);',
-      [body.title, body.description],
+    // console.log(body);
+    const result = await pool.query(
+      'INSERT INTO tasks (title, active, description) VALUES ($1, $2, $3) RETURNING *;',
+      [body.title, body.active, body.description],
     );
+
+    return result.rows[0];
   } catch (e) {
     throw e;
   }
