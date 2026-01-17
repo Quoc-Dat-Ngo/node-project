@@ -10,7 +10,7 @@ const NotFoundError = require('../utils/NotFoundError');
 const getAllTasks = async (req, res, next) => {
   try {
     const tasks = await readAllTasks();
-    res.json(tasks);
+    res.status(200).json(tasks);
   } catch (e) {
     next(e);
   }
@@ -19,7 +19,7 @@ const getAllTasks = async (req, res, next) => {
 const createTask = async (req, res, next) => {
   try {
     await createNewTask(req.body);
-    res.json(req.body);
+    res.status(201).json(req.body);
   } catch (e) {
     next(e);
   }
@@ -33,7 +33,7 @@ const getSingleTask = async (req, res, next) => {
     if (!task.length) {
       throw new NotFoundError(`Task with id ${id} not found`);
     }
-    res.json(task[0]);
+    resv.status(200).json(task[0]);
   } catch (e) {
     next(e);
   }
@@ -47,7 +47,7 @@ const updateTask = async (req, res, next) => {
     if (!update.rowCount) {
       throw new NotFoundError(`Task with id ${id} not found`);
     }
-    res.json({ status: 'Successfully updated' });
+    res.send(201).json({ status: 'Successfully updated' });
   } catch (e) {
     next(e);
   }
@@ -61,7 +61,9 @@ const deleteSingleTask = async (req, res, next) => {
     if (!del.rowCount) {
       throw new NotFoundError(`Task with id ${id} not found`);
     }
-    res.json({ status: `Sucessfully deleted the task with given id ${id}` });
+    res
+      .status(200)
+      .json({ status: `Sucessfully deleted the task with given id ${id}` });
   } catch (e) {
     next(e);
   }
