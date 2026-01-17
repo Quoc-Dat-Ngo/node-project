@@ -14,7 +14,7 @@ const paramValidate = require('../middleware/paramValidate');
 const bodySchema = require('../utils/bodySchema');
 const paramSchema = require('../utils/paramSchema');
 
-router.route('/').get(getAllTasks).post(createTask);
+router.route('/').get(getAllTasks).post(bodyValidate(bodySchema), createTask);
 router
   .route('/:id')
   .get(paramValidate(paramSchema), getSingleTask)
