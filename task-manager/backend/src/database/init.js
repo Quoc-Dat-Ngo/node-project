@@ -2,13 +2,13 @@ const pool = require('./pool');
 
 const initDb = async () => {
   try {
-    // await pool.query('DROP TABLE IF EXISTS tasks;');
+    await pool.query('DROP TABLE IF EXISTS tasks;');
 
     await pool.query(`
     	CREATE TABLE IF NOT EXISTS tasks (
     		id SERIAL PRIMARY KEY,
     		title VARCHAR(255) NOT NULL,
-				active BOOLEAN DEFAULT TRUE,
+				active BOOLEAN NOT NULL,
     		description TEXT
 				);`);
     console.log('Create new table for managing tasks');
