@@ -10,7 +10,13 @@ const migrate = async () => {
   for (const file of files) {
     const filePath = path.join(migrationDir, file);
     const sql = fs.readFileSync(filePath, 'utf8');
-    await pool.query(sql);
+    await pool
+      .query(sql)
+      .then(() => console.log('Migration OK'))
+      .catch(err => {
+        console.error('Migration FAILED:', err);
+        throw err;
+      });
   }
 };
 
