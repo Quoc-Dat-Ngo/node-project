@@ -7,3 +7,10 @@ node_modules
 logs
 *.log
 npm-debug.log*
+
+# Code coverage output
+/coverage/
+.coverage
+.coverage.*
+/htmlcov/
+.nyc_output/
