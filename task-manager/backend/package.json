@@ -8,7 +8,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --watchAll --no-cache  --detectOpenHandles",
-    "coverage": "jest --coverage --runInBand --collectCoverageFrom='src/**/*.js' --coveragePathIgnorePatterns='node_modules|tests'",
+    "coverage": "jest --coverage --runInBand  --detectOpenHandles --collectCoverageFrom='src/**/*.js' --coveragePathIgnorePatterns='node_modules|tests'",
     "test:ci": "jest --runInBand  --detectOpenHandles",
     "start": "nodemon server.js"
   },
