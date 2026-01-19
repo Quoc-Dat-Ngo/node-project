@@ -10,7 +10,7 @@ const readAllTasks = async () => {
   }
 };
 
-const readSingleTask = async id => {
+const readSingleTask = async (id) => {
   try {
     const { rows } = await pool.query('SELECT * FROM tasks WHERE id = $1', [
       id,
@@ -21,21 +21,8 @@ const readSingleTask = async id => {
   }
 };
 
-const createNewTask = async body => {
+const createNewTask = async (body) => {
   try {
-    if (!body.title || typeof body.title !== 'string')
-      throw new AppError('Title must be a string', 400);
-    if (body.title.trim() === '')
-      throw new AppError('Title can not be empty', 400);
-    if (typeof body.active !== 'boolean')
-      throw new AppError('Active status must be a boolean value', 400);
-    if (!['undefined', 'string'].includes(typeof body.description))
-      throw new AppError(
-        'Description must be a string or an undefined value',
-        400,
-      );
-
-    // console.log(body);
     const result = await pool.query(
       'INSERT INTO tasks (title, active, description) VALUES ($1, $2, $3) RETURNING *;',
       [body.title, body.active, body.description],
@@ -59,7 +46,7 @@ const updateTask = async (id, body) => {
   }
 };
 
-const deleteSingleTask = async id => {
+const deleteSingleTask = async (id) => {
   try {
     const del = await pool.query('DELETE FROM tasks WHERE id = $1', [id]);
     return del;
